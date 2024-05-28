@@ -6,7 +6,6 @@ const {
   formatComments,
 } = require('./utils');
 
-// console.log('from seedjs db->',db);
 const seed = ({ topicData, userData, articleData, commentData }) => {
   return db
     .query(`DROP TABLE IF EXISTS comments;`)
