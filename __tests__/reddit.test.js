@@ -8,10 +8,16 @@ beforeAll(()=> seed(testData))
 afterAll(()=> db.end())
 
 
-describe.only('Test to see test data seeded or not', () => {
-    test('This will seed the test data in testDb', () => {
-
-        console.log('Just to seed and check data');
+describe.only('GET /api/topics', () => {
+    test('This will respond with properties slug and description', () => {
+        return request(app)
+        .get('/api/topics')
+        .expect(200)
+        .then(({body})=>{
+            const topics = body;
+            expect(topics).toHaveLength(3)
+        })
+        
         
     });
 });
