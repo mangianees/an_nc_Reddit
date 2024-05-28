@@ -21,3 +21,18 @@ describe.only('GET /api/topics', () => {
         
     });
 });
+
+describe.only('GET /api', () => {
+    test('This will respond describing all the available endpoints on our API', () => {
+        return request(app)
+        .get('/api')
+        .expect(200)
+        .then(({body})=>{
+            expect(body).toHaveProperty('/api')
+            expect(body).toHaveProperty('/api/topics')
+            expect(body).toHaveProperty('/api/articles')
+        })
+        
+        
+    });
+});
