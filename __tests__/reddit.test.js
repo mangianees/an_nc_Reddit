@@ -8,7 +8,7 @@ beforeAll(()=> seed(testData))
 afterAll(()=> db.end())
 
 
-describe.only('GET /api/topics', () => {
+describe('GET /api/topics', () => {
     test('This will respond with properties slug and description', () => {
         return request(app)
         .get('/api/topics')
@@ -22,7 +22,7 @@ describe.only('GET /api/topics', () => {
     });
 });
 
-describe.only('GET /api', () => {
+describe('GET /api', () => {
     test('This will respond describing all the available endpoints on our API', () => {
         return request(app)
         .get('/api')
@@ -31,6 +31,32 @@ describe.only('GET /api', () => {
             expect(body).toHaveProperty('/api')
             expect(body).toHaveProperty('/api/topics')
             expect(body).toHaveProperty('/api/articles')
+        })
+        
+        
+    });
+});
+
+describe.only('GET /api/articles/:article_id', () => {
+    test('should have the properties author,title,article_id,body,topic,created_at,votes,article_img_url', () => {
+        return request(app)
+        .get('/api/articles/2')
+        .expect(200)
+        .then(({body})=>{
+            body.forEach((article)=>{
+                expect(article).toEqual(
+                    expect.objectContaining({
+                        author: expect.any(String),
+                        title: expect.any(String),
+                        article_id: expect.any(Number),
+                        body: expect.any(String),
+                        topic: expect.any(String),
+                        created_at: expect.any(String),
+                        votes: expect.any(Number),
+                        article_img_url: expect.any(String),
+                    })
+                )
+            })
         })
         
         
