@@ -8,7 +8,7 @@
     "seed": "node ./db/seeds/run-seed.js",
     "test": "jest",
     "prepare": "husky install",
-    "rough": "psql -f rough.sql > rough.txt"
+    "sql": "psql -f rough.sql > rough.txt"
   },
   "repository": {
     "type": "git",
