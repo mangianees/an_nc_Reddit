@@ -44,7 +44,7 @@
       ]
     }
   },
-  "/api/articles/:article_id/comments": {
+  "/api/articles/:article_id/comments": [{
     "description": "array of comments for the given article_id of which each comment should have comment_id,votes,created_at,author,body,article_id",
     "queries": ["comment_id","votes","created_at","author","body","article_id"],
     "exampleResponse": {
@@ -59,5 +59,19 @@
         }
       ]
     }
+  },
+
+  {
+    "description": "POST /api/articles/:article_id/comments,add a comment for an article.",
+    "queries": ["username","body"],
+    "exampleResponse": {
+      "articles": [
+        {
+          "username": "newUserName",
+          "body": " Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!"
+        }
+      ]
+    }
   }
+]
 }
