@@ -94,24 +94,38 @@ describe('GET /api/articles', () => {
 
 describe('CORE: GET /api/articles/:article_id/comments', () => {
     test.only('article objects, each of which should have the following properties author,title,article_id,topic,created_at,votes,article_img_url,comment_count', () => {
+        const article_Id =9;
         return request(app)
-        .get('/api/articles')
+        .get(`/api/articles/${article_Id}/comments`)
         .expect(200)
         .then(({body})=>{
-            body.forEach((article)=>{
-                expect(article).toEqual(
+            body.forEach((comments)=>{
+                expect(comments).toEqual(
                     expect.objectContaining({
-                        author: expect.any(String),
-                        title: expect.any(String),
-                        article_id: expect.any(Number),
-                        topic: expect.any(String),
-                        created_at: expect.any(String),
+                        comment_id:expect.any(Number),
                         votes: expect.any(Number),
-                        article_img_url: expect.any(String),
-                        comment_count: expect.any(String) 
+                        created_at: expect.any(String),
+                        author: expect.any(String),
+                        body:expect.any(String),
+                        article_id:expect.any(Number)
+                       
                     })
                 )
             })
+        })
+        
+        
+    })
+
+    test.only('SORT BY Comment Date desc', () => {
+        const article_Id =9;
+        return request(app)
+        .get(`/api/articles/${article_Id}/comments`)
+        .expect(200)
+        .then(({body})=>{
+            expect(body).toHaveLength(2)
+            // expect(body).toBeSortedBy('created_at')
+            expect(body).toBeSortedBy('created_at',{ descending: true })
         })
         
         

@@ -1,4 +1,4 @@
-const {fetchArticles,countComments} = require('../Models/articles.models')
+const {fetchArticles,fetchCommentsByArticleId} = require('../Models/articles.models')
 
 
 exports.getArticles=(req,res,next)=>{
@@ -16,3 +16,16 @@ try{
 
 }
 
+exports.getCommentsByArticleId=(req,res,next)=>{
+try {
+    const {article_id} = req.params;
+    fetchCommentsByArticleId(article_id).then((comments)=>{
+        res.status(200).send(comments);
+
+    })
+    
+} catch (err) {
+    next(err)
+}
+
+}
