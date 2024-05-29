@@ -47,3 +47,16 @@ return db.query(sqlQuery,queryValues)
         return result.rows;
 })
 })
+
+exports.fetchCommentsByArticleId=((articleId)=>{
+    let queryValues =[];
+    let sqlQuery = `select * from COMMENTS WHERE article_id=$1 `;
+
+    sqlQuery += `ORDER BY created_at DESC;`;
+
+    queryValues.push(articleId);
+    return db.query(sqlQuery,queryValues)
+    .then((result)=>{
+        return result.rows;
+})  
+})
