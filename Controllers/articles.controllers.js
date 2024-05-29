@@ -1,4 +1,4 @@
-const {fetchArticles,fetchCommentsByArticleId} = require('../Models/articles.models')
+const {fetchArticles,fetchCommentsByArticleId,insertCommentOnArticle} = require('../Models/articles.models')
 
 
 exports.getArticles=(req,res,next)=>{
@@ -28,4 +28,15 @@ try {
     next(err)
 }
 
+}
+
+exports.postCommentOnArticle=(req,res,next)=>{
+    const {username,body}=req.body; 
+    const {article_id} = req.params;
+    insertCommentOnArticle(username,body,article_id).then((comment)=>{
+        
+            res.status(201).send(comment)
+        
+
+    });
 }

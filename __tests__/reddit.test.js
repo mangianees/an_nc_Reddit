@@ -60,7 +60,9 @@ describe('GET /api/articles/:article_id', () => {
         })
         
         
-    });
+    })
+
+
 });
 
 describe('GET /api/articles', () => {
@@ -87,6 +89,22 @@ describe('GET /api/articles', () => {
         
         
     })
+
+
+    test.only('SORT BY Articles by Date created desc', () => {
+        return request(app)
+        .get(`/api/articles`)
+        .expect(200)
+        .then(({body})=>{
+            expect(body).toHaveLength(13)
+            // expect(body).toBeSortedBy('created_at')
+            expect(body).toBeSortedBy('created_at',{ descending: true })
+        })
+        
+        
+    })
+
+
 
     
 });
@@ -134,3 +152,43 @@ describe('CORE: GET /api/articles/:article_id/comments', () => {
     
 });
 
+describe('POST /api/articles/:article_id/comments', () => {
+    test.only('should check comment for an article', () => {
+        const postObject = {
+            username: "butter_bridge",
+            body: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Tenetur facilis labore saepe voluptatum ipsum doloremque, nesciunt blanditiis possimus ducimus vero! Neque alias hic saepe nostrum fugit repudiandae, repellat suscipit nobis."
+        }
+        const articleId = 5;
+        return request(app)
+        .post(`/api/articles/${articleId}/comments`)
+        .send(postObject)
+        .expect(201)
+        .then(({body})=>{
+            expect(body).toMatchObject({
+            comment_id: expect.any(Number),    
+            votes: expect.any(Number),
+            created_at: expect.any(String),
+            author: expect.any(String),
+            body: expect.any(String)
+                
+            }) 
+        })
+    })
+
+
+    // xtest('should check comment for an article', () => {
+    //     const postObject = {
+    //         username: "butter_bridge",
+    //         body: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Tenetur facilis labore saepe voluptatum ipsum doloremque, nesciunt blanditiis possimus ducimus vero! Neque alias hic saepe nostrum fugit repudiandae, repellat suscipit nobis."
+    //     }
+    //     const articleId = 15;
+    //     return request(app)
+    //     .post(`/api/articles/${articleId}/comments`)
+    //     .send(postObject)
+    //     .expect(404)
+    //     .then(({body})=>{
+    //         console.log('body',body);
+    //         // expect(bod)
+    //     })
+    // })
+});

@@ -1,12 +1,7 @@
 const db = require('../db/connection')
 
-exports.fetchArticles=((articleId,sort_by)=>{
+exports.fetchArticles=((articleId)=>{
 const validSort_by =['created_at'];
-
-// if(sort_by && !validSort_by.includes(sort_by)){
-
-//     return Promise.reject({status: 400, msg:"Bad Request thiss"});
-// }
 
 let sqlQuery= ``; 
 const queryValues=[];
@@ -19,11 +14,6 @@ const queryValues=[];
             LEFT JOIN comments ON articles.article_id = comments.article_id
             GROUP BY articles.article_id `
     }
-
-    // if(sort_by){
-    //     sqlQuery += `ORDER BY articles.created_at DESC`
-
-    // }
 
     if(articleId){
         sqlQuery += `select 
@@ -39,9 +29,8 @@ const queryValues=[];
         queryValues.push(articleId);
     }
 
-sqlQuery += `;`;
+sqlQuery += `ORDER BY articles.created_at DESC;`;
 
-// console.log('sqlQuery---<',sqlQuery);
 return db.query(sqlQuery,queryValues)
     .then((result)=>{
         return result.rows;
@@ -60,3 +49,36 @@ exports.fetchCommentsByArticleId=((articleId)=>{
         return result.rows;
 })  
 })
+
+
+
+exports.insertCommentOnArticle= async (username,body,article_id)=>{
+
+    try {
+        
+        
+        let sqlQuery = ``;
+        
+        sqlQuery += `SELECT * FROM articles WHERE article_id = $1`
+        
+        
+        const {rowCount} = await db.query(sqlQuery,[article_id])
+
+        if(rowCount===0){
+            const err = new Error("No Article Found");
+            err.status = 404;
+            throw err;
+        }
+        
+        sqlQuery = `
+            INSERT INTO comments (author, body, article_id)
+            VALUES ($1, $2, $3)
+            RETURNING comment_id, votes, created_at, author, body, article_id;
+          `;
+        
+          const { rows } = await db.query(sqlQuery, [username, body, article_id]);
+          return rows[0];
+    } catch (err) {
+        return err
+    }
+}
