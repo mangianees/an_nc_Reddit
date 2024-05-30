@@ -229,3 +229,24 @@ describe('DELETE /api/comments/:comment_id', () => {
     });
     
 });
+
+describe('GET /api/users', () => {
+    test.only('should check all users', () => {
+
+        return request(app)
+        .get('/api/users')
+        .expect(200)
+        .then(({body})=>{
+            body.forEach((user)=>{
+                expect(user).toEqual(
+                    expect.objectContaining({
+                        username: expect.any(String),
+                        name: expect.any(String),
+                        avatar_url: expect.any(String)
+                    })
+                )
+            })
+        })
+        
+    });
+});
