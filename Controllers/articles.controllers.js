@@ -6,7 +6,6 @@ try{
     const {article_id,sort_by} = req.query;
     fetchArticles(article_id,sort_by)
     .then((articles)=>{
-        // console.log('cnt articles',articles);
         res.status(200).send(articles);
     })
 
@@ -34,8 +33,11 @@ exports.postCommentOnArticle=(req,res,next)=>{
     const {username,body}=req.body; 
     const {article_id} = req.params;
     insertCommentOnArticle(username,body,article_id).then((comment)=>{
-        
+        if(comment.status!==404){
             res.status(201).send(comment)
+        }else{
+            res.status(404).send({msg: "No Article Found"})
+        }
         
 
     });
