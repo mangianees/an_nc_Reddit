@@ -1,4 +1,4 @@
-const {fetchArticles,fetchCommentsByArticleId,insertCommentOnArticle} = require('../Models/articles.models')
+const {fetchArticles,fetchCommentsByArticleId,insertCommentOnArticle,updateCommentOnArticle} = require('../Models/articles.models')
 
 
 exports.getArticles=(req,res,next)=>{
@@ -40,5 +40,17 @@ exports.postCommentOnArticle=(req,res,next)=>{
         }
         
 
+    });
+}
+
+exports.patchArticleById=(req,res,next)=>{
+    const {username,body,votes}=req.body; 
+    const {article_id} = req.params;
+    updateCommentOnArticle(username,body,votes,article_id).then((comment)=>{
+        if(comment.status!==404){
+            res.status(201).send(comment)
+        }else{
+            res.status(404).send({msg: "No Article Found"})
+        }
     });
 }
