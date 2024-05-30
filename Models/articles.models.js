@@ -82,3 +82,38 @@ exports.insertCommentOnArticle= async (username,body,article_id)=>{
         return err
     }
 }
+
+exports.updateCommentOnArticle = async (username,body,votes,article_id)=>{
+    try {
+    
+        let sqlQuery = ``;
+        
+        sqlQuery += `SELECT * FROM articles WHERE article_id = $1`
+        
+        
+        const {rowCount} = await db.query(sqlQuery,[article_id])
+
+        if(rowCount===0){
+
+            const err = new Error("No Article Found");
+            err.status = 404;
+            throw err;
+        }
+        
+        sqlQuery = `
+        UPDATE articles SET
+        author= $1,
+        body= $2,
+        votes = votes + $3
+        WHERE article_id =$4 RETURNING *`
+
+          const { rows } = await db.query(sqlQuery, [username, body, votes, article_id]);
+          return rows[0];
+
+
+        } catch (err) {
+        return err
+    }
+
+    
+}

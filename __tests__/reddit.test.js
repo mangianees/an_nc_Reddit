@@ -97,16 +97,9 @@ describe('GET /api/articles', () => {
         .expect(200)
         .then(({body})=>{
             expect(body).toHaveLength(13)
-            // expect(body).toBeSortedBy('created_at')
             expect(body).toBeSortedBy('created_at',{ descending: true })
-        })
-        
-        
-    })
-
-
-
-    
+        })  
+    })    
 });
 
 
@@ -142,14 +135,9 @@ describe('CORE: GET /api/articles/:article_id/comments', () => {
         .expect(200)
         .then(({body})=>{
             expect(body).toHaveLength(2)
-            // expect(body).toBeSortedBy('created_at')
             expect(body).toBeSortedBy('created_at',{ descending: true })
         })
-        
-        
-    })
-
-    
+    })  
 });
 
 describe('POST /api/articles/:article_id/comments', () => {
@@ -176,7 +164,7 @@ describe('POST /api/articles/:article_id/comments', () => {
     })
 
 
-    test.only('should check comment for an article', () => {
+    test.only('Check availability of article', () => {
         const postObject = {
             username: "butter_bridge",
             body: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Tenetur facilis labore saepe voluptatum ipsum doloremque, nesciunt blanditiis possimus ducimus vero! Neque alias hic saepe nostrum fugit repudiandae, repellat suscipit nobis."
@@ -190,4 +178,41 @@ describe('POST /api/articles/:article_id/comments', () => {
            expect(body.msg).toBe("No Article Found")
         })
     })
+});
+
+describe('PATCH /api/articles/:article_id', () => {
+    const patchObject = {
+        username: "butter_bridge",
+        body: "01-UPDATED Lorem ipsum dolor sit, amet consectetur adipisicing elit. Tenetur facilis labore saepe voluptatum ipsum doloremque, nesciunt blanditiis possimus ducimus vero! Neque alias hic saepe nostrum fugit repudiandae, repellat suscipit nobis.",
+        votes: -2
+    }
+    test.only('Should update an article by article_id and how much the votes property in the database should be updated', () => {
+        return request(app)
+        // .patch(`/api/articles?article_id=5`)
+        .patch(`/api/articles/5`)
+        .send(patchObject)
+        .expect(201)
+        .then(({body})=>{
+            expect(body).toMatchObject({
+            votes: expect.any(Number),
+            created_at: expect.any(String),
+            author: expect.any(String),
+            body: expect.any(String),
+            votes: expect.any(Number)    
+            }) 
+        })    
+    })
+
+    test.only('Check availability of article', () => {
+        return request(app)
+        // .patch(`/api/articles?article_id=15`)
+        .patch(`/api/articles/15`)
+        .send(patchObject)
+        .expect(404)
+        .then(({body})=>{
+           expect(body.msg).toBe("No Article Found")
+        })
+    })
+
+
 });

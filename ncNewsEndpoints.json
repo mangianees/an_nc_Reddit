@@ -27,7 +27,7 @@
     }
   },
   "/api/articles/:article_id": {
-    "description": "hould have the properties author,title,article_id,body,topic,created_at,votes,article_img_url",
+    "description": ["Should have the properties author,title,article_id,body,topic,created_at,votes,article_img_url", "Should update an article by article_id and how much the votes property in the database should be updated"],
     "queries": ["author","title","article_id","body","topic","created_at","votes","article_img_url"],
     "exampleResponse": {
       "articles": [
