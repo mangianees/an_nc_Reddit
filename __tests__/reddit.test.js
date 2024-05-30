@@ -188,7 +188,6 @@ describe('PATCH /api/articles/:article_id', () => {
     }
     test.only('Should update an article by article_id and how much the votes property in the database should be updated', () => {
         return request(app)
-        // .patch(`/api/articles?article_id=5`)
         .patch(`/api/articles/5`)
         .send(patchObject)
         .expect(201)
@@ -205,7 +204,6 @@ describe('PATCH /api/articles/:article_id', () => {
 
     test.only('Check availability of article', () => {
         return request(app)
-        // .patch(`/api/articles?article_id=15`)
         .patch(`/api/articles/15`)
         .send(patchObject)
         .expect(404)
@@ -215,4 +213,19 @@ describe('PATCH /api/articles/:article_id', () => {
     })
 
 
+});
+
+describe('DELETE /api/comments/:comment_id', () => {
+    test.only('should delete the given comment by comment_id', () => {
+        return request(app)
+        .delete(`/api/comments/5`)
+        .expect(204)
+    });
+
+    test.only('should send 404 comment not found', () => {
+        return request(app)
+        .delete(`/api/comments/55`)
+        .expect(404)
+    });
+    
 });
