@@ -17,16 +17,10 @@ app.post('/api/articles/:article_id/comments',postCommentOnArticle)
 app.use((err,req,res,next)=>{
     if(err.status && err.msg){
         res.status(err.status).send(err.msg);
-        console.log('eerror use used');
     }else{
         next(err);
     }
 })
-
-
-// app.listen(9090,()=>{
-//     console.log('App is listening on 9090');
-// })
 
 module.exports = app;
 

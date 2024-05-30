@@ -176,19 +176,18 @@ describe('POST /api/articles/:article_id/comments', () => {
     })
 
 
-    // xtest('should check comment for an article', () => {
-    //     const postObject = {
-    //         username: "butter_bridge",
-    //         body: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Tenetur facilis labore saepe voluptatum ipsum doloremque, nesciunt blanditiis possimus ducimus vero! Neque alias hic saepe nostrum fugit repudiandae, repellat suscipit nobis."
-    //     }
-    //     const articleId = 15;
-    //     return request(app)
-    //     .post(`/api/articles/${articleId}/comments`)
-    //     .send(postObject)
-    //     .expect(404)
-    //     .then(({body})=>{
-    //         console.log('body',body);
-    //         // expect(bod)
-    //     })
-    // })
+    test.only('should check comment for an article', () => {
+        const postObject = {
+            username: "butter_bridge",
+            body: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Tenetur facilis labore saepe voluptatum ipsum doloremque, nesciunt blanditiis possimus ducimus vero! Neque alias hic saepe nostrum fugit repudiandae, repellat suscipit nobis."
+        }
+        const articleId = 15;
+        return request(app)
+        .post(`/api/articles/${articleId}/comments`)
+        .send(postObject)
+        .expect(404)
+        .then(({body})=>{
+           expect(body.msg).toBe("No Article Found")
+        })
+    })
 });
