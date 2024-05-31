@@ -20,6 +20,8 @@ app.delete('/api/comments/:comment_id',deleteCommentById)
 
 app.get('/api/users',getUsers)
 
+// app.get('/api/articles?topic=any')
+
 app.use((err,req,res,next)=>{
     if(err.status && err.msg){
         res.status(err.status).send(err.msg);

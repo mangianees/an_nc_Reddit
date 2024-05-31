@@ -3,8 +3,8 @@ const {fetchArticles,updateArticle} = require('../Models/articles.models')
 
 exports.getArticles=(req,res,next)=>{
 try{
-    const {article_id,sort_by} = req.query;
-    fetchArticles(article_id,sort_by)
+    const {article_id,sort_by,topic} = req.query;
+    fetchArticles(article_id,topic)//sort_by deleted
     .then((articles)=>{
         res.status(200).send(articles);
     })

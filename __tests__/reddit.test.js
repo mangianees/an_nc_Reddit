@@ -250,3 +250,19 @@ describe('GET /api/users', () => {
         
     });
 });
+
+
+describe('GET /api/articles (topic query)', () => {
+    test.only('should filters the articles by the topic value specified in the query', () => {
+        const topic = `mitch`
+        return request(app)
+        .get(`/api/articles?topic=${topic}`)
+        .expect(200)
+        .then(({body})=>{
+            body.forEach((article)=>{
+                expect(article.topic).toEqual(`${topic}`)
+            })
+        })
+        
+    });
+});
