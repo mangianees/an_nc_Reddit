@@ -1,6 +1,6 @@
 const db = require('../db/connection')
 
-exports.fetchArticles=((articleId)=>{
+exports.fetchArticles=((articleId,topic)=>{
 const validSort_by =['created_at'];
 
 let sqlQuery= ``; 
@@ -31,6 +31,11 @@ const queryValues=[];
 
 sqlQuery += `ORDER BY articles.created_at DESC;`;
 
+if(topic){
+    sqlQuery = ``;
+    sqlQuery += `select * FROM ARTICLES WHERE topic= $1`;
+    queryValues.push(topic);
+}
 return db.query(sqlQuery,queryValues)
     .then((result)=>{
         return result.rows;
