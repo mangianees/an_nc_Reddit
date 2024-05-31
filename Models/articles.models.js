@@ -12,24 +12,22 @@ const queryValues=[];
         COUNT(comments.comment_id) AS comment_count
             FROM articles
             LEFT JOIN comments ON articles.article_id = comments.article_id
-            GROUP BY articles.article_id `
+            GROUP BY articles.article_id ORDER BY articles.created_at DESC;`
     }
 
     if(articleId){
-        sqlQuery += `select 
-        author,
-        title,
-        article_id,
-        topic,
-        created_at,
-        votes,
-        article_img_url,
-        body FROM ARTICLES `
-        sqlQuery += `WHERE article_id = $1`;
+        sqlQuery += `SELECT articles.author,articles.body, articles.title, articles.article_id, articles.topic, articles.created_at,
+        articles.votes, articles.article_img_url,
+        COUNT(comments.comment_id) AS comment_count
+ FROM articles
+ LEFT JOIN comments ON articles.article_id = comments.article_id `
+        
+        sqlQuery += `WHERE articles.article_id = $1
+        GROUP BY articles.author,articles.body, articles.title, articles.article_id, articles.topic, articles.created_at,
+                 articles.votes, articles.article_img_url;`;
         queryValues.push(articleId);
     }
-
-sqlQuery += `ORDER BY articles.created_at DESC;`;
+    
 
 if(topic){
     sqlQuery = ``;
